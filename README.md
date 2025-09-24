@@ -92,13 +92,20 @@ Jag har testat manuellt att:
 ## Installation
 
 ```bash
+
+# Initiera
+git init
+
+# Klona
+git clone 
+
 # Installera
 npm install
 
 # Starta
 npm start
 
-# Bygg för produktion
+# Bygg projektet
 npm run build
 ```
 
