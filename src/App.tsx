@@ -211,6 +211,54 @@ const POPULAR_CITIES: CityData[] = [
     timezone: 'Asia/Shanghai',
     coordinates: { lat: 31.2304, lon: 121.4737 }
   },
+  {
+  name: 'Toronto',
+  country: 'Canada',
+  countryCode: 'CA',
+  timezone: 'America/Toronto'
+  },
+  {
+    name: 'Hong Kong',
+    country: 'China',
+    countryCode: 'HK',
+    timezone: 'Asia/Hong_Kong'
+  },
+  {
+    name: 'Rome',
+    country: 'Italy',
+    countryCode: 'IT',
+    timezone: 'Europe/Rome'
+  },
+  {
+    name: 'Bangkok',
+    country: 'Thailand',
+    countryCode: 'TH',
+    timezone: 'Asia/Bangkok'
+  },
+  {
+    name: 'Chicago',
+    country: 'United States',
+    countryCode: 'US',
+    timezone: 'America/Chicago'
+  },
+  {
+    name: 'Mumbai',
+    country: 'India',
+    countryCode: 'IN',
+    timezone: 'Asia/Kolkata'
+  },
+  {
+    name: 'Mexico City',
+    country: 'Mexico',
+    countryCode: 'MX',
+    timezone: 'America/Mexico_City'
+  },
+  {
+    name: 'Auckland',
+    country: 'New Zealand',
+    countryCode: 'NZ',
+    timezone: 'Pacific/Auckland'
+  },
 ];
 
 // Images
