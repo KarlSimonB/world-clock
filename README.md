@@ -1,46 +1,113 @@
-# Getting Started with Create React App
+# World Clock - TypeScript Project av Simon Bergstrand FE24 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Om Projektet
 
-## Available Scripts
+En webbapp med tidszoner över hela världen. 
+Användaren kan lägga till städer och se klockan i städer över hela världen i digital och analog form. 
+Inställningar sparas i localStorage, så städerna man lagt till sparas.
 
-In the project directory, you can run:
+## Design och Gränssitt
 
-### `npm start`
+Jag valde ett enkelt kortbaserat gränssnitt där varje stad får ett eget kort med en bakgrundsbild. 
+Layouten är ett 3x3 rutnät på desktop som blir 1 kolumn med hjälp av responsive design på mobil/små skärmar.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Minimal design med fokus på funktionerna först och främst
+- Varje stad har en en fin bild för att det ska se bra ut
+- Placeholder kort och Modal-popup för att lägga till nya städer
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Applikationsstruktur
 
-### `npm test`
+### Komponenter
+- **App.tsx** - Mainkomponenten
+- **CityDetail.tsx** - Detaljvy när man klickar på stadskorten
+- **useLocalStorage.ts** - Sparar städerna så man har kvar dem vid nästa tillfälle
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Types och Interfaces
 
-### `npm run build`
+```typescript
+interface City {
+  id: string;
+  name: string;
+  country: string;
+  timezone: TimeZone;
+  imageUrl: string;
+}
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Alla interfaces ligger i App.tsx och exporteras för att andra filer ska kunna använda sig av dem dem.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## TypeScript-fördelar i projektet
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1. Props får rätt typ
+```typescript
+const CityCard: React.FC<{
+  city: City;
+  displayMode: 'digital' | 'analog';
+}> = ({ city, displayMode }) => {
+```
+Man kan inte skicka fel data till komponenter.
 
-### `npm run eject`
+### 2. Interfaces håller koll på datastruktur
+När jag skapar en ny stad måste den ha alla rätta fält, annars går det inte med TypeScript.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 3. Type Guards validerar data
+```typescript
+const isValidCityArray = (data: unknown): data is City[] => {
+  // Kollar att datan är korrekt
+}
+```
+Säkerställer att data från localStorage är korrekt.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## TypeScript blir JavaScript
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+TypeScript kan inte köras direkt i webbläsaren. Create React App gör om TypeScript-koden till vanlig JavaScript när man kör `npm start`. 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Git-process
 
-## Learn More
+Jag missade lite med git, behöver repetera git under nästa projekt
+Ungefär såhär borde jag jobbat mer I git:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+git commit -m "Initial commit"
+git commit -m "Add city component"
+git commit -m "Add localStorage support"
+git commit -m "Add React Router for detail view"
+git commit -m "Fix timezone calculation"
+```
+
+
+## Testning
+
+Jag har testat manuellt att:
+- Det går att söka efter städer
+- Mängden timmar som skiljer
+- Man kan lägga till och ta bort städer
+- Klockan visar rätt tid, bade digital och visarna på analoga
+- Digital/analog växling fungerar
+- Data sparas när man laddar om sidan
+- Detaljvyn fungerar
+- Layouten fungerar på mobil och desktop
+
+## Installation
+
+```bash
+# Installera
+npm install
+
+# Starta
+npm start
+
+# Bygg för produktion
+npm run build
+```
+
+## Projektstruktur
+```
+src/
+├── App.tsx              # Huvudfil
+├── App.css              # Stilar
+├── CityDetail.tsx       # Detaljvy
+├── CityDetail.css       # Stilar för detaljvy
+└── useLocalStorage.ts   # localStorage hook
+```
