@@ -1,9 +1,9 @@
 // useLocalStorage.ts - Custom hook for localStorage with TypeScript
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // Import types from your App.tsx
-import type { City, ClockSettings, ClockDisplayMode } from './App';
+import type { City, ClockSettings }  from '../const/types';
 
 // Generic type T extends any serializable type
 function useLocalStorage<T>(

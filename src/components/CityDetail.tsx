@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, MapPin } from 'lucide-react';
-import './CityDetail.css';
 
-// Import types from App
-import type { City, TimeZone } from './App';
+// Import types from the correct location
+import type { City } from './const/types';
 
 interface CityDetailProps {
   cities: City[];
@@ -12,7 +11,6 @@ interface CityDetailProps {
 
 const CityDetail: React.FC<CityDetailProps> = ({ cities }) => {
   const { cityId } = useParams<{ cityId: string }>();
-  const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
   
   // Find the city by ID
