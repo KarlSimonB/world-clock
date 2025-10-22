@@ -36,7 +36,15 @@ const timeZoneService = {
       'Asia/Singapore': '+08:00',
       'Europe/Moscow': '+03:00',
       'Asia/Hong_Kong': '+08:00',
-      'Asia/Kolkata': '+05:30'
+      'Asia/Kolkata': '+05:30',
+      'Asia/Shanghai': '+08:00',
+      'America/Chicago': '-06:00',
+      'Europe/Berlin': '+01:00',
+      'America/Toronto': '-05:00',
+      'Europe/Rome': '+01:00',
+      'Asia/Bangkok': '+07:00',
+      'America/Mexico_City': '-06:00',
+      'Pacific/Auckland': '+13:00'
     };
 
     return {

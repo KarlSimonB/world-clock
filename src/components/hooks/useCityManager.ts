@@ -3,8 +3,6 @@ import useLocalStorage from './useLocalStorage';
 import { City, CityData } from '../const/types';
 import { POPULAR_CITIES } from '../const/cities';
 import { getCityImageUrl } from '../const/images';
-import { timeZoneService } from '../services/timeZoneService';
-import { formatTimezoneOffset } from '../../utils/formatTimezoneOffset';
 
 export const useCityManager = () => {
   const [storedCities, setStoredCities] = useLocalStorage<City[]>('worldClock.cities', []);
@@ -22,29 +20,18 @@ export const useCityManager = () => {
   }, [storedCities.length, cities.length]);
 
   const initializeCities = async () => {
-    const initialCities: City[] = [];
-    for (const cityData of POPULAR_CITIES.slice(0, 2)) {
-      try {
-        const timeInfo = await timeZoneService.getTimeZone(cityData.timezone).catch(() =>
-          timeZoneService.getFallbackTimeZone(cityData.timezone)
-        );
-        
-        initialCities.push({
-          id: cityData.name.toLowerCase(),
-          name: cityData.name.toUpperCase(),
-          country: cityData.country,
-          countryCode: cityData.countryCode,
-          timezone: {
-            name: cityData.timezone,
-            offset: formatTimezoneOffset(timeInfo.utc_offset),
-            displayName: cityData.timezone.replace('_', ' ')
-          },
-          imageUrl: getCityImageUrl(cityData.name)
-        });
-      } catch (error) {
-        console.error(`Failed to load ${cityData.name}:`, error);
-      }
-    }
+    const initialCities: City[] = POPULAR_CITIES.slice(0, 2).map(cityData => ({
+      id: cityData.name.toLowerCase(),
+      name: cityData.name.toUpperCase(),
+      country: cityData.country,
+      countryCode: cityData.countryCode,
+      timezone: {
+        name: cityData.timezone,
+        offset: '', // Not needed - using timezone name instead
+        displayName: cityData.timezone.replace('_', ' ')
+      },
+      imageUrl: getCityImageUrl(cityData.name)
+    }));
     setCities(initialCities);
   };
 
@@ -63,30 +50,21 @@ export const useCityManager = () => {
       return;
     }
 
-    try {
-      const timeInfo = await timeZoneService.getTimeZone(cityData.timezone).catch(() =>
-        timeZoneService.getFallbackTimeZone(cityData.timezone)
-      );
-      
-      const newCity: City = {
-        id: `${cityData.name.toLowerCase()}-${Date.now()}`,
-        name: cityData.name.toUpperCase(),
-        country: cityData.country,
-        countryCode: cityData.countryCode,
-        timezone: {
-          name: cityData.timezone,
-          offset: formatTimezoneOffset(timeInfo.utc_offset),
-          displayName: cityData.timezone.replace('_', ' ')
-        },
-        imageUrl: getCityImageUrl(cityData.name)
-      };
-      
-      handleAddCity(newCity);
-      setSearchQuery('');
-    } catch (error) {
-      console.error('Error adding city:', error);
-      alert('Failed to add city. Please try again.');
-    }
+    const newCity: City = {
+      id: `${cityData.name.toLowerCase()}-${Date.now()}`,
+      name: cityData.name.toUpperCase(),
+      country: cityData.country,
+      countryCode: cityData.countryCode,
+      timezone: {
+        name: cityData.timezone,
+        offset: '',
+        displayName: cityData.timezone.replace('_', ' ')
+      },
+      imageUrl: getCityImageUrl(cityData.name)
+    };
+    
+    handleAddCity(newCity);
+    setSearchQuery('');
   };
 
   const handleRemoveCity = (cityId: string) => {

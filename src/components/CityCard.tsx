@@ -17,22 +17,6 @@ export const CityCard: React.FC<CityCardProps> = ({ city, displayMode, onToggleM
   const currentTime = useCurrentTime();
   
   const formatTime = (date: Date): string => {
-    if (city.timezone.name.startsWith('UTC')) {
-      const offset = city.timezone.offset;
-      const offsetHours = parseInt(offset.replace('+', '')) || 0;
-      const offsetMinutes = (parseFloat(offset.replace('+', '')) % 1) * 60;
-      
-      const utcTime = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
-      const localTime = new Date(utcTime.getTime() + (offsetHours * 60 + offsetMinutes) * 60000);
-      
-      return localTime.toLocaleTimeString('sv-SE', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
-    }
-    
     return date.toLocaleTimeString('sv-SE', {
       timeZone: city.timezone.name,
       hour12: false,
@@ -40,6 +24,20 @@ export const CityCard: React.FC<CityCardProps> = ({ city, displayMode, onToggleM
       minute: '2-digit',
       second: '2-digit'
     });
+  };
+
+  const getGMTOffset = (): string => {
+    try {
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: city.timezone.name,
+        timeZoneName: 'longOffset'
+      });
+      const parts = formatter.formatToParts(new Date());
+      const offset = parts.find(p => p.type === 'timeZoneName')?.value;
+      return offset?.replace('GMT', '') || 'UTC';
+    } catch {
+      return city.timezone.offset || 'UTC';
+    }
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -103,7 +101,7 @@ export const CityCard: React.FC<CityCardProps> = ({ city, displayMode, onToggleM
                 {formatTime(currentTime)}
               </div>
               <div className="gmt-text">
-                GMT {city.timezone.offset}
+                GMT {getGMTOffset()}
               </div>
             </div>
           ) : (
@@ -114,7 +112,7 @@ export const CityCard: React.FC<CityCardProps> = ({ city, displayMode, onToggleM
                 size={80} 
               />
               <div className="gmt-text">
-                GMT {city.timezone.offset}
+                GMT {getGMTOffset()}
               </div>
             </div>
           )}
