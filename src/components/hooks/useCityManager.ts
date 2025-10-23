@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import useLocalStorage from './useLocalStorage';
 import { City, CityData } from '../const/types';
-import { POPULAR_CITIES } from '../const/cities';
 import { getCityImageUrl } from '../const/images';
 
 export const useCityManager = () => {
@@ -12,28 +11,6 @@ export const useCityManager = () => {
   useEffect(() => {
     setStoredCities(cities);
   }, [cities, setStoredCities]);
-
-  useEffect(() => {
-    if (storedCities.length === 0 && cities.length === 0) {
-      initializeCities();
-    }
-  }, [storedCities.length, cities.length]);
-
-  const initializeCities = async () => {
-    const initialCities: City[] = POPULAR_CITIES.slice(0, 2).map(cityData => ({
-      id: cityData.name.toLowerCase(),
-      name: cityData.name.toUpperCase(),
-      country: cityData.country,
-      countryCode: cityData.countryCode,
-      timezone: {
-        name: cityData.timezone,
-        offset: '', // Not needed - using timezone name instead
-        displayName: cityData.timezone.replace('_', ' ')
-      },
-      imageUrl: getCityImageUrl(cityData.name)
-    }));
-    setCities(initialCities);
-  };
 
   const handleAddCity = (city: City) => {
     setCities(prev => [...prev, city]);
@@ -58,7 +35,7 @@ export const useCityManager = () => {
       timezone: {
         name: cityData.timezone,
         offset: '',
-        displayName: cityData.timezone.replace('_', ' ')
+        displayName: cityData.timezone.replace(/_/g, ' ')
       },
       imageUrl: getCityImageUrl(cityData.name)
     };

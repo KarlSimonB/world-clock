@@ -17,6 +17,22 @@ export const CityCard: React.FC<CityCardProps> = ({ city, displayMode, onToggleM
   const currentTime = useCurrentTime();
   
   const formatTime = (date: Date): string => {
+    if (city.timezone.name.startsWith('UTC') || city.timezone.name.startsWith('GMT')) {
+      const offsetStr = city.timezone.name.replace('UTC', '').replace('GMT', '');
+      const [hours, minutes] = offsetStr.split(':').map(Number);
+      const offsetMs = (hours * 60 + (minutes || 0)) * 60 * 1000;
+      
+      const utcTime = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+      const localTime = new Date(utcTime.getTime() + offsetMs);
+      
+      return localTime.toLocaleTimeString('sv-SE', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
+    
     return date.toLocaleTimeString('sv-SE', {
       timeZone: city.timezone.name,
       hour12: false,
@@ -24,20 +40,6 @@ export const CityCard: React.FC<CityCardProps> = ({ city, displayMode, onToggleM
       minute: '2-digit',
       second: '2-digit'
     });
-  };
-
-  const getGMTOffset = (): string => {
-    try {
-      const formatter = new Intl.DateTimeFormat('en-US', {
-        timeZone: city.timezone.name,
-        timeZoneName: 'longOffset'
-      });
-      const parts = formatter.formatToParts(new Date());
-      const offset = parts.find(p => p.type === 'timeZoneName')?.value;
-      return offset?.replace('GMT', '') || 'UTC';
-    } catch {
-      return city.timezone.offset || 'UTC';
-    }
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -101,18 +103,24 @@ export const CityCard: React.FC<CityCardProps> = ({ city, displayMode, onToggleM
                 {formatTime(currentTime)}
               </div>
               <div className="gmt-text">
-                GMT {getGMTOffset()}
+                GMT {city.timezone.offset}
               </div>
             </div>
           ) : (
             <div className="analog-time">
-              <AnalogClock 
-                time={currentTime} 
-                timezone={city.timezone.name} 
-                size={80} 
-              />
+              {city.timezone.name.startsWith('UTC') || city.timezone.name.startsWith('GMT') ? (
+                <div style={{ width: '80px', height: '80px', background: '#f0f0f0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666', fontSize: '0.75rem' }}>
+                  {formatTime(currentTime)}
+                </div>
+              ) : (
+                <AnalogClock 
+                  time={currentTime} 
+                  timezone={city.timezone.name} 
+                  size={80} 
+                />
+              )}
               <div className="gmt-text">
-                GMT {getGMTOffset()}
+                GMT {city.timezone.offset}
               </div>
             </div>
           )}

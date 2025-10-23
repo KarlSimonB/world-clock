@@ -1,5 +1,3 @@
-// useLocalStorage.ts - Custom hook for localStorage with TypeScript
-
 import { useState } from 'react';
 
 // Import types from your App.tsx
