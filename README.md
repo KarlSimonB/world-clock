@@ -97,7 +97,7 @@ npm run build
 
 - Migrerad från Create React App till Vite
 - Reducerad komplexitet - App.tsx: 1030 → 69 rader
-- Bättre modulär struktur med separata komponente och mappar 
+- Bättre modulär struktur med separata komponenter och mappar 
 - Tydligare filmnamngivning och mappstruktur: 
 `/components`, `/styles`, `/utils`, `/const`, `/hooks` & `/services`
 - Organiserad styling, index.css har bara imports och undviker inline CSS 
