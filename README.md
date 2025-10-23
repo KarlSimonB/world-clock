@@ -5,11 +5,11 @@ En webbapp för att se och jämföra vad klockan är i olika städer och tidszon
 ##  Om Projektet
 
 En responsiv webbapp där användare kan:
--Jämföra tider mellan olika tidszoner
--Söka och lägga till populära städer
--Lägga till och ställa in egna städer
--Välja digital eller analog klockvisning
--Få sina inställningar sparade automatiskt 
+- Jämföra tider mellan olika tidszoner
+- Söka och lägga till populära städer
+- Lägga till och ställa in egna städer
+- Välja digital eller analog klockvisning
+- Få sina inställningar sparade automatiskt 
 
 Appen inkluderar ett urval av populära städer med bilder, och nyttjar localStorage för att spara användares valda städer och inställningar mellan sessioner.
 
@@ -98,7 +98,8 @@ npm run build
 - Migrerad från Create React App till Vite
 - Reducerad komplexitet - App.tsx: 1030 → 69 rader
 - Bättre modulär struktur med separata komponente och mappar 
-- Tydligare filmnamngivning och mappstruktur: `/components`, `/styles`, `/utils`, `/const`, `/hooks` & `/services`
+- Tydligare filmnamngivning och mappstruktur: 
+`/components`, `/styles`, `/utils`, `/const`, `/hooks` & `/services`
 - Organiserad styling, index.css har bara imports och undviker inline CSS 
 - De-bloated och snyggat till överlag
 
