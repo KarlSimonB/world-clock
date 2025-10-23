@@ -1,120 +1,108 @@
-# World Clock - TypeScript Project av Simon Bergstrand FE24 
+# World Clock - TypeScript & React Projekt
 
-## Om Projektet
+En webbapp för att se och jämföra vad klockan är i olika städer och tidszoner runt om i världen.
 
-En webbapp med tidszoner över hela världen. 
-Användaren kan lägga till städer och se klockan i städer över hela världen i digital och analog form. 
-Inställningar sparas i localStorage, så städerna man lagt till sparas.
+##  Om Projektet
+
+En responsiv webbapp där användare kan:
+-Jämföra tider mellan olika tidszoner
+-Söka och lägga till populära städer
+-Lägga till och ställa in egna städer
+-Välja digital eller analog klockvisning
+-Få sina inställningar sparade automatiskt 
+
+Appen inkluderar ett urval av populära städer med bilder, och nyttjar localStorage för att spara användares valda städer och inställningar mellan sessioner.
 
 ## Design och Gränssitt
 
-Jag valde ett enkelt kortbaserat gränssnitt där varje stad får ett eget kort med en bakgrundsbild. 
-Layouten är ett 3x3 rutnät på desktop som blir 1 kolumn med hjälp av responsive design på mobil/små skärmar.
+Kortbaserat, minimalistiskt gränssnitt med fokus på funktion,resposivitet och användarvänlighet:
+- Ett responsivt 3x3 grid som vid mindre skärmar staplas vertikalt
+- Modal-popup för att enkelt lägga till nya städer
+- Real-time klockuppdateringar 
+- Se GMT-tiszoner på valda städer och jämföra
 
-- Minimal design med fokus på funktionerna först och främst
-- Varje stad har en en fin bild för att det ska se bra ut
-- Placeholder kort och Modal-popup för att lägga till nya städer
+### Responsiv bredd
+- Desktop | 3 kort  | 900px+
+- Tablet  | 2 kort  | 550-768px 
+- Mobil   | 1 Kort  | <480px 
 
-## Applikationsstruktur
 
-### Komponenter
-- **App.tsx** - Mainkomponenten
-- **CityDetail.tsx** - Detaljvy när man klickar på stadskorten
-- **useLocalStorage.ts** - Sparar städerna så man har kvar dem vid nästa tillfälle
+##  Projektstruktur
 
-### Types och Interfaces
-
-```typescript
-interface City {
-  id: string;
-  name: string;
-  country: string;
-  timezone: TimeZone;
-  imageUrl: string;
-}
 ```
-
-Alla interfaces ligger i App.tsx och exporteras för att andra filer ska kunna använda sig av dem dem.
-
-## TypeScript-fördelar i projektet
-
-### 1. Props får rätt typ
-```typescript
-const CityCard: React.FC<{
-  city: City;
-  displayMode: 'digital' | 'analog';
-}> = ({ city, displayMode }) => {
-```
-Man kan inte skicka fel data till komponenter.
-
-### 2. Interfaces håller koll på datastruktur
-När jag skapar en ny stad måste den ha alla rätta fält, annars går det inte med TypeScript.
-
-### 3. Type Guards validerar data
-```typescript
-const isValidCityArray = (data: unknown): data is City[] => {
-  // Kollar att datan är korrekt
-}
-```
-Säkerställer att data från localStorage är korrekt.
-
-## TypeScript blir JavaScript
-
-TypeScript kan inte köras direkt i webbläsaren. Create React App gör om TypeScript-koden till vanlig JavaScript när man kör `npm start`. 
-
-## Git-process
-
-Jag missade lite med git, behöver repetera git under nästa projekt
-Ungefär såhär borde jag jobbat mer I git:
-
-
-```bash
-git commit -m "Initial commit"
-git commit -m "Add city component"
-git commit -m "Add localStorage support"
-git commit -m "Add React Router for detail view"
-git commit -m "Fix timezone calculation"
+src/
+├── App.tsx                          # Mainkomponent
+├── index.tsx                        # Entry point
+├── components/
+│   ├── CityCard.tsx                # Stadskort
+│   ├── CityDetail.tsx              # Detaljerad vy 
+│   ├── CityGrid.tsx                # Grid för layout av Stadskort
+│   ├── AddCityModal.tsx            # För att lägga till stad
+│   ├── Header.tsx                  # Sökfält
+│   ├── AnalogClock.tsx             # Analog klocka
+│   ├── const/
+│   │   ├── cities.ts               # Populära städer
+│   │   ├── images.ts               # Bilder
+│   │   ├── types.ts                # Types för vyer
+│   │   └── utcOffsets.ts           # GMT/UTC förskjutning
+│   ├── hooks/
+│   │   ├── useCityManager.ts       # Stadstillståndshantering
+│   │   ├── useCurrentTime.ts       # Hook för nuvarande tid
+│   │   ├── useDisplayModes.ts      # Digital/analog mode
+│   │   ├── useLocalStorage.ts      # Val sparas i localstorage imellan sessioner
+│   └── services/
+│       └── timeZoneService.ts      # API för tidszoner
+├── styles/
+│   ├── index.css                   # Main style import
+│   ├── base.css                    # Style reset
+│   ├── components.css              # Komponentstyles
+│   └── responsive.css              # Responsivitet vid små skärmar
+└── utils/
+    └── formatTimezoneOffset.ts     # Tidszonsformatering
 ```
 
 
 ## Testning
 
-Jag har testat manuellt att:
-- Det går att söka efter städer
-- Mängden timmar som skiljer
+Manuellt testad funktionalitet:
+- Sökning och filtrering av städer
+- Digital och analog tidsvisning
+- Lägg till/ta bort förvalda och egenvalda städer
 - Man kan lägga till och ta bort städer
-- Klockan visar rätt tid, bade digital och visarna på analoga
-- Digital/analog växling fungerar
+- Tidszonberäkningar och se GMT 
+- Växling mellan visningslägen
 - Data sparas när man laddar om sidan
 - Detaljvyn fungerar
-- Layouten fungerar på mobil och desktop
+- Responsiv design (mobil & desktop)
 
 ## Installation
 
 ```bash
 
-# Initiera
-git init
+# Klona projektet
+git clone https://github.com/KarlSimonB/world-clock.git
+cd world-clock
 
-# Klona
-git clone 
-
-# Installera
+# Installera beroenden
 npm install
 
-# Starta
-npm start
+# Starta utvecklingsserver (öppnas på http://localhost:5173) 
+npm run dev
 
-# Bygg projektet
+# Bygg projektet för produktion
 npm run build
 ```
 
-## Projektstruktur
-```
-src/
-├── App.tsx              # Huvudfil
-├── App.css              # Stilar
-├── CityDetail.tsx       # Detaljvy
-├── CityDetail.css       # Stilar för detaljvy
-└── useLocalStorage.ts   # localStorage hook
-```
+##  Förbättringar från Original
+
+- Migrerad från Create React App till Vite
+- Reducerad komplexitet - App.tsx: 1030 → 69 rader
+- Bättre modulär struktur med separata komponente och mappar 
+- Tydligare filmnamngivning och mappstruktur: `/components`, `/styles`, `/utils`, `/const`, `/hooks` & `/services`
+- Organiserad styling, index.css har bara imports och undviker inline CSS 
+- De-bloated och snyggat till överlag
+
+
+##  Licens
+
+Skolprojekt av Simon Bergstrand - FE24
