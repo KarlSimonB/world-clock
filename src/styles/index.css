@@ -1,22 +1,48 @@
-/* Reset */
+/* ==================== RESET & BASE ==================== */
 * {
   box-sizing: border-box;
+}
+
+html {
+  overflow-y: auto; /* Allow scrollbar when needed */
+  height: 100%;
 }
 
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   background-color: #d1d5db;
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Main app container */
+/* ==================== APP LAYOUT ==================== */
 .app {
-  min-height: 100vh;
+  height: 100vh;
   background-color: #a4a6a8;
   padding: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ==================== HEADER ==================== */
+.app-footer {
+  text-align: center;
+  padding: 1rem 0 0 0;
+  flex-shrink: 0;
+}
+
+.footer-text {
+  color: #333;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.footer-highlight {
+  font-weight: 600;
+}
+
+/* ==================== HEADER & SEARCH ==================== */
 .header {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -58,6 +84,7 @@ body {
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
+/* ==================== SEARCH RESULTS ==================== */
 .search-results {
   position: absolute;
   top: 100%;
@@ -134,30 +161,34 @@ body {
   font-size: 14px;
 }
 
-/* ==================== GRID ==================== */
+/* ==================== GRID CONTAINER ==================== */
 .grid-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .city-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
 }
 
-/* ==================== CITY CARD ==================== */
+/* ==================== CITY CARD BASE ==================== */
 .city-card {
   position: relative;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  aspect-ratio: 1.25 / 1;
+  aspect-ratio: 1 / 0.9;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 220px;
 }
-
 .city-card:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -185,6 +216,7 @@ body {
   padding: 0.75rem;
 }
 
+/* ==================== CITY CARD HEADER ==================== */
 .city-header {
   display: flex;
   justify-content: space-between;
@@ -200,6 +232,27 @@ body {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
+.remove-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  padding: 0.2rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* ==================== CITY CARD TOGGLE BUTTONS ==================== */
 .toggle-container {
   display: flex;
   gap: 0.2rem;
@@ -229,6 +282,7 @@ body {
   border-color: rgba(0, 0, 0, 0.7);
 }
 
+/* ==================== CITY CARD TIME DISPLAY ==================== */
 .time-display {
   flex: 1;
   display: flex;
@@ -237,7 +291,8 @@ body {
   align-items: center;
 }
 
-.digital-time {
+.digital-time,
+.analog-time {
   text-align: center;
 }
 
@@ -249,10 +304,6 @@ body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-.analog-time {
-  text-align: center;
-}
-
 .gmt-text {
   color: white;
   font-size: 0.6rem;
@@ -260,62 +311,45 @@ body {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-.remove-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  border-radius: 50%;
-  color: white;
-  cursor: pointer;
-  padding: 0.2rem;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.remove-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.1);
-}
-
 /* ==================== ADD CITY CARD ==================== */
 .add-city-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
   border: 2px dashed #ddd;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1.25 / 1;
+  aspect-ratio: 1 / 0.9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 220px;
 }
 
 .add-city-card:hover {
   border-color: #007bff;
   background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-city-card:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .add-city-card svg {
   color: #666;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
 }
 
 .add-city-card:hover svg {
   color: #007bff;
-  transform: scale(1.1) rotate(90deg);
-}
-
-.add-city-card:active {
-  transform: translateY(0px) scale(0.98);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+  transform: scale(1.1);
 }
 
 .add-city-card::before {
@@ -336,7 +370,7 @@ body {
   height: 120px;
 }
 
-/* ==================== MODAL ==================== */
+/* ==================== MODAL OVERLAY & CONTAINER ==================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -357,6 +391,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* ==================== MODAL SECTIONS ==================== */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -392,6 +427,16 @@ body {
   color: #333;
 }
 
+.modal-actions {
+  padding: 1.5rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  background: #f9f9f9;
+}
+
+/* ==================== MODAL FORM ELEMENTS ==================== */
 .section {
   margin-bottom: 1.5rem;
 }
@@ -473,16 +518,9 @@ body {
   margin-top: 0.5rem;
 }
 
-.modal-actions {
-  padding: 1.5rem;
-  border-top: 1px solid #eee;
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-  background: #f9f9f9;
-}
-
-.cancel-btn, .add-btn {
+/* ==================== MODAL BUTTONS ==================== */
+.cancel-btn,
+.add-btn {
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
   font-size: 0.9rem;
@@ -547,24 +585,20 @@ body {
   border-color: black;
 }
 
-/* ==================== CITY DETAIL ==================== */
-.city-detail-container {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
+/* ==================== CITY DETAIL PAGE ==================== */
 .city-detail-hero {
-  height: 300px;
+  height: 200px;
   position: relative;
   background-size: cover;
   background-position: center;
+  flex-shrink: 0;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -606,24 +640,27 @@ body {
   margin: 0.5rem 0 0 0;
 }
 
+/* ==================== CITY DETAIL CONTENT ==================== */
 .detail-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem;
+  width: 100%;
+  flex: 1;
 }
 
 .time-section {
   background: white;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .current-time-display {
   text-align: center;
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
   border-bottom: 1px solid #eee;
 }
 
@@ -633,6 +670,7 @@ body {
   justify-content: center;
   gap: 1rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .time-value {
@@ -649,11 +687,13 @@ body {
   gap: 0.5rem;
   color: #666;
   font-size: 1.1rem;
+  flex-wrap: wrap;
 }
 
+/* ==================== TIME INFO CARDS ==================== */
 .time-info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
 }
 
@@ -675,11 +715,13 @@ body {
 .info-card svg {
   color: #007bff;
   flex-shrink: 0;
+  min-width: 20px;
 }
 
 .info-card > div {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .info-label {
@@ -689,68 +731,45 @@ body {
 }
 
 .info-value {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #333;
+  word-break: break-word;
 }
 
+/* ==================== ANALOG CLOCK SECTION ==================== */
 .analog-clock-section {
   background: white;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 .analog-clock-section h2 {
-  margin: 0 0 2rem 0;
+  margin: 0 0 1.5rem 0;
   color: #333;
 }
 
 .analog-clock-large {
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+  max-width: 100%;
+  height: auto;
 }
 
-.city-detail-error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 2rem;
-  text-align: center;
-}
-
-.city-detail-error h2 {
-  color: #333;
-  margin-bottom: 2rem;
-}
-
-/* ==================== FOOTER ==================== */
-.app-footer {
-  text-align: center;
-  margin-top: 2rem;
-  padding: 1rem;
-}
-
-.footer-text {
-  color: #333;
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.footer-highlight {
-  font-weight: 600;
-}
-
-/* ==================== RESPONSIVE ==================== */
+/* ==================== RESPONSIVE - TABLET ==================== */
 @media (max-width: 768px) {
+  .app {
+    overflow-y: auto;
+  }
+  
   .city-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   
   .city-detail-hero {
-    height: 200px;
+    height: 150px;
   }
   
   .city-title {
@@ -766,26 +785,61 @@ body {
   }
   
   .time-value {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   
   .time-info-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
   
   .info-card {
     padding: 0.75rem;
   }
+  
+  .info-value {
+    font-size: 0.9rem;
+  }
 }
 
+/* ==================== RESPONSIVE - SMALL TABLET ==================== */
+
+@media (max-width: 550px) {
+  .city-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .city-card {
+    aspect-ratio: 1.1 / 1;
+    min-height: 180px;
+  }
+  
+  .add-city-card {
+    aspect-ratio: 1.1 / 1;
+    min-height: 180px;
+  }
+}
+
+/* ==================== RESPONSIVE - MOBILE ==================== */
 @media (max-width: 480px) {
   .app {
+    overflow-y: auto;
     padding: 0.5rem;
   }
   
   .city-grid {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 0.5rem;
+  }
+  
+  .city-card {
+    aspect-ratio: 1 / 1;
+    min-height: 200px;
+  }
+  
+  .add-city-card {
+    aspect-ratio: 1 / 1;
+    min-height: 200px;
   }
   
   .main-title {
@@ -811,5 +865,71 @@ body {
   .toggle-btn {
     font-size: 0.55rem;
     padding: 0.15rem 0.4rem;
+  }
+  
+  .city-detail-hero {
+    height: 120px;
+  }
+  
+  .city-title {
+    font-size: 1.5rem;
+  }
+  
+  .city-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .hero-overlay {
+    padding: 1rem;
+  }
+  
+  .detail-content {
+    padding: 0.75rem;
+  }
+  
+  .time-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .time-value {
+    font-size: 2rem;
+  }
+  
+  .time-main {
+    gap: 0.5rem;
+  }
+  
+  .time-date {
+    font-size: 0.9rem;
+    gap: 0.25rem;
+  }
+  
+  .time-info-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .info-card {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  .info-label {
+    font-size: 0.75rem;
+  }
+  
+  .info-value {
+    font-size: 0.85rem;
+  }
+  
+  .analog-clock-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .analog-clock-section h2 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
   }
 }
